@@ -1,0 +1,16 @@
+# Ignore dataset
+data/
+*.png
+*.jpg
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore results if needed (optional)
+# results/
+
+# Virtual environment
+venv/
+.venv/
+env/
