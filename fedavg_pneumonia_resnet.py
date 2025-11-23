@@ -26,7 +26,7 @@ from sklearn.metrics import accuracy_score, f1_score, roc_auc_score , roc_curve
 # -----------------------
 # Config / Hyperparams
 # -----------------------
-DATA_DIR = "./dataset"   # change if needed
+DATA_DIR = "./data/chest_xray"
 NUM_CLIENTS = 4                    # number of simulated hospitals/clients
 NUM_ROUNDS = 15                    # communication rounds
 FRACTION_CLIENTS = 1.0             # SELECT ALL CLIENTS EVERY ROUND (no randomness)
@@ -344,6 +344,22 @@ def main():
     pd.DataFrame(per_client_results).to_csv("per_client_results.csv", index=False)
     print("Saved per_client_results.csv")
 
+    # === Final Test Accuracy per Client (Bar Graph) ===
+    # Load client results (already saved above)
+    client_df = pd.DataFrame(per_client_results)
+
+    plt.figure(figsize=(8, 5))
+    plt.bar(client_df["client"].astype(str), client_df["accuracy"])
+    plt.xlabel("Client ID", fontsize=12, fontweight='bold')
+    plt.ylabel("Accuracy", fontsize=12, fontweight='bold')
+    plt.title("Final Test Accuracy per Client", fontsize=13, fontweight='bold')
+    plt.ylim(0, 1.0)
+    plt.grid(axis="y", alpha=0.3)
+    plt.tight_layout()
+    plt.savefig("final_accuracy_per_client_bar.png", dpi=150)
+    print("Saved final_accuracy_per_client_bar.png")
+
+
     # Plot global accuracy vs rounds
     plt.figure(figsize=(8, 5))
     plt.plot(range(1, len(global_acc_history) + 1), global_acc_history, marker='o', linewidth=2, label='Global Accuracy')
@@ -409,5 +425,5 @@ def main():
     print(" - final_global_metrics.txt")
     print(" - roc_curve_global.png (if plotted)")
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
